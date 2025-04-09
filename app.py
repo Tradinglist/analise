@@ -7,7 +7,7 @@ from model import train_model
 # 🔄 Busca dinâmica dos pares EUR disponíveis com base em exchangeInfo
 @st.cache_data(ttl=3600)
 def get_available_eur_pairs(allowed_bases=['BTC', 'ETH', 'ADA', 'SOL', 'BNB', 'XRP']):
-    url = "https://api.binance.com/api/v3/ticker/price"
+    url = "https://api.binance.com/api/v3/ticker/price/"
     try:
         response = requests.get(url)
         response.raise_for_status()
