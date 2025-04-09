@@ -1,32 +1,30 @@
-from binance.client import Client
-from datetime import datetime
 import pandas as pd
+from datetime import datetime
+import requests
 
-# Função para buscar dados históricos de uma criptomoeda
-def get_binance_data(symbol='BTCEUR', interval='1h', lookback='365 days ago UTC'):
-    # Evita autenticação usando API pública
-    client = Client(api_key=None, api_secret=None)
+# Função para coletar dados históricos sem autenticação
+def get_binance_data(symbol='BTCEUR', interval='1h', limit=1000):
+    url = f"https://api.binance.com/api/v3/klines"
+    params = {"symbol": symbol, "interval": interval, "limit": limit}
+    response = requests.get(url, params=params)
+    data = response.json()
 
-    # Obtém os dados históricos (klines)
-    klines = client.get_historical_klines(symbol, interval, lookback)
-
-    # Converte os dados em um DataFrame estruturado
-    data = []
-    for k in klines:
-        data.append({
+    processed = []
+    for k in data:
+        processed.append({
             'timestamp': datetime.utcfromtimestamp(k[0] / 1000),
             'open': float(k[1]),
             'high': float(k[2]),
             'low': float(k[3]),
             'close': float(k[4]),
-            'volume': float(k[5])
+            'volume': float(k[5]),
         })
 
-    df = pd.DataFrame(data)
+    df = pd.DataFrame(processed)
     df.set_index('timestamp', inplace=True)
 
-    # Adiciona médias móveis
+    # Cálculo de médias móveis
     df['SMA_50'] = df['close'].rolling(window=50).mean()
     df['SMA_200'] = df['close'].rolling(window=200).mean()
-    
+
     return df.dropna()
