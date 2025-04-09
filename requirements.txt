@@ -1,4 +1,4 @@
-binance
+python-binance
 pandas
 scikit-learn
 matplotlib
