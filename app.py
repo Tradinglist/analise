@@ -4,33 +4,12 @@ from binance_data import get_binance_data
 from analyze_data import plot_chart
 from model import train_model
 
-# Busca pares EUR disponíveis na Binance (BTC, ETH, ADA, etc.)
-@st.cache_data(ttl=3600)
-def get_available_eur_pairs(allowed_bases=['BTC', 'ETH', 'ADA', 'SOL', 'BNB', 'XRP']):
-    url = "https://api.binance.com/api/v3/exchangeInfo"
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        data = response.json()
-        pairs = [s['symbol'] for s in data['symbols']]
-        eur_pairs = [p for p in pairs if p.endswith('EUR')]
-        valid_pairs = [p for p in eur_pairs if p.replace('EUR', '') in allowed_bases]
-        return sorted(valid_pairs)
-    except Exception as e:
-        st.error(f"Erro ao buscar pares EUR da Binance: {e}")
-        return []
-
 # Página principal
 st.set_page_config(page_title="Previsão de Criptomoedas", layout="wide")
 st.title("📈 Previsão de Preço de Criptomoedas em EUR")
 
-# Carregar pares EUR disponíveis
-available_pairs = get_available_eur_pairs()
-if not available_pairs:
-    st.error("❌ Nenhum par EUR disponível encontrado na Binance no momento.")
-    st.stop()
-
-# Seleção do par válido
+# Lista manual de pares que funcionam bem (evita erro 451)
+available_pairs = ["BTCEUR", "ETHEUR", "BNBEUR", "XRPEUR", "ADAEUR", "SOLEUR"]
 symbol = st.selectbox("Escolha o par de criptomoeda:", available_pairs)
 crypto_name = symbol.replace("EUR", "")
 
