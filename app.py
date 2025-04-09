@@ -18,6 +18,10 @@ crypto_name = symbol.replace("EUR", "")
 with st.spinner(f"🔄 Carregando dados para {symbol}..."):
     df = get_binance_data(symbol)
 
+# DEBUG opcional (remover depois)
+st.write("Primeiras linhas dos dados carregados:")
+st.dataframe(df.head())
+
 # Verifica se os dados são válidos
 if df.empty or 'close' not in df.columns or 'open' not in df.columns:
     st.error(f"❌ Dados indisponíveis para o par {symbol}.")
