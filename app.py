@@ -9,7 +9,7 @@ st.set_page_config(page_title="Previsão de Criptomoedas", layout="wide")
 st.title("📈 Previsão de Preço de Criptomoedas em EUR")
 
 # Lista manual de pares que funcionam bem (evita erro 451)
-available_pairs = ["BTCEUR", "ETHEUR", "BNBEUR", "XRPEUR", "ADAEUR", "SOLEUR"]
+available_pairs = ["BTCUSDC", "ETHEUR", "BNBEUR", "XRPEUR", "ADAEUR", "SOLEUR"]
 symbol = st.selectbox("Escolha o par de criptomoeda:", available_pairs)
 crypto_name = symbol.replace("EUR", "")
 
