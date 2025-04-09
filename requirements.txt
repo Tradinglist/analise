@@ -1,0 +1,6 @@
+binance
+pandas
+scikit-learn
+matplotlib
+plotly
+streamlit
